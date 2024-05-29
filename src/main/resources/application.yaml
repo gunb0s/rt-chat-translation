@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: rt_chat_translation
+google:
+  cloud:
+    credentials:
+      location: classpath:rtchatwithtranslation-8f3847ebc62c.json

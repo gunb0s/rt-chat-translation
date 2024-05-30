@@ -1,4 +1,4 @@
-package com.gunb0s.rt_chat_translation;
+package com.gunb0s.rt_chat_translation.google_translation;
 
 
 import com.google.cloud.translate.Translate;

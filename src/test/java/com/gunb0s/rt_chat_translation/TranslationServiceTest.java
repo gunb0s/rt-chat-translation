@@ -1,5 +1,6 @@
 package com.gunb0s.rt_chat_translation;
 
+import com.gunb0s.rt_chat_translation.google_translation.TranslationService;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

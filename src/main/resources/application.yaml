@@ -1,6 +1,15 @@
 spring:
-  profiles:
-    active: local
+  config:
+    activate:
+      on-profile: local
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:testdb
+    username: sa
+    password: password
+  h2:
+    console:
+      enabled: true
   application:
     name: rt_chat_translation
   jpa:
@@ -22,3 +31,15 @@ google:
   cloud:
     credentials:
       location: classpath:rtchatwithtranslation-8f3847ebc62c.json
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: dev
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/chat_app
+    username: your_mysql_username
+    password: your_mysql_password

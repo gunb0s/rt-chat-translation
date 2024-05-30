@@ -1,7 +1,7 @@
 package com.gunb0s.rt_chat_translation;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.gunb0s.rt_chat_translation.socket.Message;
+import com.gunb0s.rt_chat_translation.socket.HelloMessage;
 
 public class Utils {
     private static final ObjectMapper objectMapper = new ObjectMapper();
@@ -9,11 +9,11 @@ public class Utils {
     private Utils() {
     }
 
-    public static Message getObject(final String message) throws Exception {
-        return objectMapper.readValue(message, Message.class);
+    public static HelloMessage getObject(final String message) throws Exception {
+        return objectMapper.readValue(message, HelloMessage.class);
     }
 
-    public static String getString(final Message message) throws Exception {
+    public static String getString(final HelloMessage message) throws Exception {
         return objectMapper.writeValueAsString(message);
     }
 }

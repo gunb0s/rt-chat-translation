@@ -21,7 +21,10 @@ public class WebSocketEventListener {
         if (destination != null && destination.startsWith("/sub/channel/")) {
             String chatId = destination.split("/")[3];
             if (!chatRoomRepository.existsById(chatId)) {
-                ChatRoom chatRoom = new ChatRoom();
+                ChatRoom chatRoom = ChatRoom
+                        .builder()
+                        .id(chatId)
+                        .build();
                 chatRoomRepository.save(chatRoom);
             }
 

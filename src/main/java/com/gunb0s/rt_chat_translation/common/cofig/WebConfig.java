@@ -1,5 +1,6 @@
-package com.gunb0s.rt_chat_translation.common;
+package com.gunb0s.rt_chat_translation.common.cofig;
 
+import com.gunb0s.rt_chat_translation.common.interceptor.LoggingInterceptor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;

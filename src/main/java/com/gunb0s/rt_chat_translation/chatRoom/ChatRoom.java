@@ -1,6 +1,6 @@
 package com.gunb0s.rt_chat_translation.chatRoom;
 
-import com.gunb0s.rt_chat_translation.common.BaseEntity;
+import com.gunb0s.rt_chat_translation.common.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.NoArgsConstructor;

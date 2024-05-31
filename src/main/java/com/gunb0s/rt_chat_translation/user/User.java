@@ -1,13 +1,15 @@
 package com.gunb0s.rt_chat_translation.user;
 
-import com.gunb0s.rt_chat_translation.common.BaseEntity;
+import com.gunb0s.rt_chat_translation.common.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "users")
+@Table(name = "users", uniqueConstraints = {
+        @UniqueConstraint(columnNames = "githubId", name = "uk_user_github_id"),
+})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 public class User extends BaseEntity {
@@ -16,8 +18,8 @@ public class User extends BaseEntity {
     private String id;
 
     @Column(nullable = false, unique = true)
-    private String username;
+    private Long githubId;
 
-    @Column(nullable = false, unique = true)
-    private String email;
+    @Column()
+    private String username;
 }

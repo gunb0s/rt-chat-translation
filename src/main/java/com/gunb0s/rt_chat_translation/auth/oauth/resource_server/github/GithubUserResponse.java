@@ -1,10 +1,10 @@
-package com.gunb0s.rt_chat_translation.common;
+package com.gunb0s.rt_chat_translation.auth.oauth.resource_server.github;
 
 import lombok.Getter;
 
 @Getter
 public class GithubUserResponse {
-    private Integer id;
+    private Long id;
     private String login;
     private String email;
 }

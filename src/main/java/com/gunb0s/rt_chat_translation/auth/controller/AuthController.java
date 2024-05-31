@@ -1,5 +1,7 @@
-package com.gunb0s.rt_chat_translation.auth;
+package com.gunb0s.rt_chat_translation.auth.controller;
 
+import com.gunb0s.rt_chat_translation.auth.oauth.resource_server.ResourceServer;
+import com.gunb0s.rt_chat_translation.auth.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -11,7 +13,7 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/auth")
-    public String oAuth(@RequestParam String code) {
-        return authService.oAuth(code);
+    public String oAuth(@RequestParam String code, @RequestParam("resource_server") ResourceServer resourceServer) {
+        return authService.oAuth(code, resourceServer);
     }
 }

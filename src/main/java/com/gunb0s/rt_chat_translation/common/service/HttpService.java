@@ -1,4 +1,4 @@
-package com.gunb0s.rt_chat_translation.common;
+package com.gunb0s.rt_chat_translation.common.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

@@ -1,5 +1,6 @@
 spring:
   config:
+    import: optional:file:.env[.properties]
     activate:
       on-profile: local
   datasource:
@@ -31,6 +32,10 @@ google:
   cloud:
     credentials:
       location: classpath:rtchatwithtranslation-8f3847ebc62c.json
+github:
+  client:
+    id: ${GITHUB_CLIENT_ID}
+    secret: ${GITHUB_CLIENT_SECRET}
 
 ---
 

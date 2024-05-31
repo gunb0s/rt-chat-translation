@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
-import org.springframework.web.util.UriComponentsBuilder;
 
 @Component
 @RequiredArgsConstructor
@@ -12,21 +11,17 @@ import org.springframework.web.util.UriComponentsBuilder;
 public class HttpService {
     private final WebClient webClient;
 
-    public String post(String code) {
-        String url = UriComponentsBuilder.fromHttpUrl("https://github.com/login/oauth/access_token")
-                .queryParam("client_id", "")
-                .queryParam("client_secret", "")
-                .queryParam("code", code)
-                .build()
-                .toUriString();
+    public <T> T post(String code, String url, Object body, Class<T> responseClass) {
+
 
         log.info("url: {}", url);
 
         return webClient.post()
                 .uri(url)
                 .header("Accept", "application/json")
+                .bodyValue(body)
                 .retrieve()
-                .bodyToMono(String.class)
+                .bodyToMono(responseClass)
                 .block();
     }
 }

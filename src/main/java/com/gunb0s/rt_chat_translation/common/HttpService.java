@@ -11,10 +11,27 @@ import org.springframework.web.reactive.function.client.WebClient;
 public class HttpService {
     private final WebClient webClient;
 
-    public <T> T post(String code, String url, Object body, Class<T> responseClass) {
+    public <T> T get(String url, String accessToken, Class<T> responseClass) {
+        log.info("[GET] url: {}", url);
+        return webClient.get()
+                .uri(url)
+                .header("Authorization", "Bearer " + accessToken)
+                .retrieve()
+                .bodyToMono(responseClass)
+                .block();
 
+    }
 
-        log.info("url: {}", url);
+    public <T> T post(String url, Object body, Class<T> responseClass) {
+        log.info("[POST] url: {}", url);
+        if (body == null) {
+            return webClient.post()
+                    .uri(url)
+                    .header("Accept", "application/json")
+                    .retrieve()
+                    .bodyToMono(responseClass)
+                    .block();
+        }
 
         return webClient.post()
                 .uri(url)

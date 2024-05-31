@@ -1,5 +1,6 @@
 package com.gunb0s.rt_chat_translation.common;
 
+import com.gunb0s.rt_chat_translation.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -9,6 +10,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 @RequiredArgsConstructor
 public class GithubAuthService {
     private final HttpService httpService;
+    private final UserRepository userRepository;
 
     @Value("${github.client.id}")
     private String clientId;
@@ -23,7 +25,13 @@ public class GithubAuthService {
                 .queryParam("code", code)
                 .build()
                 .toUriString();
+        GithubAccessTokenResponse githubAuthResponse = httpService.post(url, null, GithubAccessTokenResponse.class);
 
-        return httpService.post(code, url, null, String.class);
+        String requestUserUrl = UriComponentsBuilder.fromHttpUrl("https://api.github.com/user")
+                .build()
+                .toUriString();
+        GithubUserResponse githubUserResponse = httpService.get(requestUserUrl, githubAuthResponse.getAccess_token(), GithubUserResponse.class);
+
+        return "hi";
     }
 }

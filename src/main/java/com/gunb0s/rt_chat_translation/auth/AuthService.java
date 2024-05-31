@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 public class AuthService {
     private final GithubAuthService githubAuthService;
 
-    public String signup(String code) {
+    public String oAuth(String code) {
         String accessToken = githubAuthService.requestAccessToken(code);
         return "signup";
     }

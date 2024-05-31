@@ -1,8 +1,8 @@
 package com.gunb0s.rt_chat_translation.auth;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController()
@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
     private final AuthService authService;
 
-    @PostMapping("auth/{code}")
-    public String signup(@PathVariable String code) {
-        return authService.signup(code);
+    @PostMapping("/auth")
+    public String oAuth(@RequestParam String code) {
+        return authService.oAuth(code);
     }
 }

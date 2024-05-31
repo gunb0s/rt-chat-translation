@@ -1,6 +1,7 @@
 package com.gunb0s.rt_chat_translation.auth.oauth.resource_server.github;
 
 import com.gunb0s.rt_chat_translation.auth.oauth.resource_server.OAuthResourceServer;
+import com.gunb0s.rt_chat_translation.auth.oauth.resource_server.OAuthUserInfo;
 import com.gunb0s.rt_chat_translation.common.SpringContext;
 import com.gunb0s.rt_chat_translation.common.service.HttpService;
 import org.springframework.core.env.Environment;
@@ -31,11 +32,14 @@ public class GithubAuthService implements OAuthResourceServer {
         return githubAuthResponse.getAccess_token();
     }
 
-    public Long requestUserId(String accessToken) {
+    public OAuthUserInfo requestUserInfo(String accessToken) {
         String requestUserUrl = UriComponentsBuilder.fromHttpUrl("https://api.github.com/user")
                 .build()
                 .toUriString();
         GithubUserResponse githubUserResponse = httpService.get(requestUserUrl, accessToken, GithubUserResponse.class);
-        return githubUserResponse.getId();
+        return OAuthUserInfo.builder()
+                .id(githubUserResponse.getId())
+                .username(githubUserResponse.getName())
+                .build();
     }
 }

@@ -3,6 +3,7 @@ package com.gunb0s.rt_chat_translation.user;
 import com.gunb0s.rt_chat_translation.common.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -22,4 +23,10 @@ public class User extends BaseEntity {
 
     @Column()
     private String username;
+
+    @Builder
+    public User(Long githubId, String username) {
+        this.githubId = githubId;
+        this.username = username;
+    }
 }

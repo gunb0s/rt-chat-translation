@@ -1,6 +1,5 @@
 package com.gunb0s.rt_chat_translation.socket;
 
-import com.gunb0s.rt_chat_translation.chatRoom.entity.ChatRoom;
 import com.gunb0s.rt_chat_translation.chatRoom.entity.repository.ChatRoomRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.event.EventListener;
@@ -17,18 +16,5 @@ public class WebSocketEventListener {
     public void handleSessionSubscribeEvent(SessionSubscribeEvent event) {
         SimpMessageHeaderAccessor accessor = SimpMessageHeaderAccessor.wrap(event.getMessage());
         String destination = accessor.getDestination();
-
-        if (destination != null && destination.startsWith("/sub/channel/")) {
-            String chatId = destination.split("/")[3];
-            if (!chatRoomRepository.existsById(chatId)) {
-                ChatRoom chatRoom = ChatRoom
-                        .builder()
-                        .id(chatId)
-                        .build();
-                chatRoomRepository.save(chatRoom);
-            }
-
-            // chatRoom 에 User 도 저장.
-        }
     }
 }

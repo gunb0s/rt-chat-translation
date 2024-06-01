@@ -22,7 +22,8 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         registry
-                .addEndpoint("/rt-chat") // 웹 소켓 서버의 엔드포인트
-                .setAllowedOrigins("*"); // 클라이언트에서 웹 소켓 서버에 요청 시 모든 요청을 수용한다.
+                .addEndpoint("/ws") // 웹 소켓 서버의 엔드포인트
+                .setAllowedOrigins("http://localhost:3000")
+                .withSockJS(); // 클라이언트에서 웹 소켓 서버에 요청 시 모든 요청을 수용한다.
     }
 }

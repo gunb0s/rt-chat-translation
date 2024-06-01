@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "users", uniqueConstraints = {
         @UniqueConstraint(columnNames = "githubId", name = "uk_user_github_id"),
+        @UniqueConstraint(columnNames = "username", name = "uk_user_username")
 })
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
@@ -21,7 +22,7 @@ public class User extends BaseEntity {
     @Column(nullable = false, unique = true)
     private Long githubId;
 
-    @Column()
+    @Column(unique = true)
     private String username;
 
     @Builder

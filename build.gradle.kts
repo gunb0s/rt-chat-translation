@@ -26,7 +26,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-websocket")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework:spring-webflux:6.1.0")
-//    implementation("org.springframework.boot:spring-boot-starter-security")
+    implementation("org.springframework.boot:spring-boot-starter-security")
     // jwt
     implementation("io.jsonwebtoken:jjwt:0.9.1")
     // com.sun.xml.bind

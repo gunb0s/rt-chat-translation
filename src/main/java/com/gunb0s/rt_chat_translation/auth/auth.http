@@ -1,3 +1,3 @@
-### signup
-POST http://localhost:8080/auth/code
+### auth
+POST http://localhost:8080/auth?code=9a66d5bd4f47a1c88eea&resource_server=GITHUB
 Content-Type: application/json

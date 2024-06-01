@@ -1,6 +1,7 @@
 package com.gunb0s.rt_chat_translation.chatRoom.controller;
 
 import com.gunb0s.rt_chat_translation.auth.service.MyUserDetail;
+import com.gunb0s.rt_chat_translation.chatRoom.controller.dto.ChatRoomDto;
 import com.gunb0s.rt_chat_translation.chatRoom.entity.ChatRoom;
 import com.gunb0s.rt_chat_translation.chatRoom.service.ChatRoomService;
 import com.gunb0s.rt_chat_translation.common.dto.ResponseDto;
@@ -12,6 +13,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/chat-room")
@@ -35,11 +38,19 @@ public class ChatRoomController {
     }
 
     @GetMapping("/my")
-    public ResponseEntity<?> getMyChatRooms() {
+    public ResponseEntity<?> getMyChatRooms(Authentication authentication) {
+        MyUserDetail myUserDetail = (MyUserDetail) authentication.getPrincipal();
+        List<ChatRoom> myChatRooms = chatRoomService.getMyChatRooms(myUserDetail.getId());
+        List<ChatRoomDto> list = myChatRooms
+                .stream()
+                .map(ChatRoomDto::new)
+                .toList();
+
         return ResponseEntity
                 .ok(
                         ResponseDto.builder()
                             .status(HttpStatus.OK.value())
+                            .data(list)
                             .build()
                 );
     }

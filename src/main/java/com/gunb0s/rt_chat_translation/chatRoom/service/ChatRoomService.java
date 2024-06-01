@@ -9,12 +9,15 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class ChatRoomService {
     private final ChatRoomRepository chatRoomService;
     private final UserRepository userRepository;
+    private final ChatRoomRepository chatRoomRepository;
 
     @Transactional
     public ChatRoom createChatRoom(String userId) {
@@ -31,5 +34,9 @@ public class ChatRoomService {
 
         chatRoom.addUser(chatRoomUser);
         return chatRoomService.save(chatRoom);
+    }
+
+    public List<ChatRoom> getMyChatRooms(String userId) {
+        return chatRoomRepository.findAllByUserId(userId);
     }
 }

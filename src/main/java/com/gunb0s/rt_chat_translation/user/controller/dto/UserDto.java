@@ -1,4 +1,4 @@
-package com.gunb0s.rt_chat_translation.user;
+package com.gunb0s.rt_chat_translation.user.controller.dto;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;

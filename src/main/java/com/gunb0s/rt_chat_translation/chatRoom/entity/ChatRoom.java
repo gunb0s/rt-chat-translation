@@ -1,4 +1,4 @@
-package com.gunb0s.rt_chat_translation.chatRoom;
+package com.gunb0s.rt_chat_translation.chatRoom.entity;
 
 import com.gunb0s.rt_chat_translation.common.entity.BaseEntity;
 import jakarta.persistence.*;

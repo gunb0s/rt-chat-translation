@@ -1,7 +1,7 @@
 package com.gunb0s.rt_chat_translation.socket;
 
-import com.gunb0s.rt_chat_translation.chatRoom.ChatRoom;
-import com.gunb0s.rt_chat_translation.chatRoom.ChatRoomRepository;
+import com.gunb0s.rt_chat_translation.chatRoom.entity.ChatRoom;
+import com.gunb0s.rt_chat_translation.chatRoom.entity.repository.ChatRoomRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.event.EventListener;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;

@@ -1,6 +1,6 @@
-package com.gunb0s.rt_chat_translation.chatRoom;
+package com.gunb0s.rt_chat_translation.chatRoom.entity;
 
-import com.gunb0s.rt_chat_translation.user.User;
+import com.gunb0s.rt_chat_translation.user.entity.User;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;

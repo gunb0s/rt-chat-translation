@@ -21,20 +21,27 @@ public class AuthService {
     @Transactional
     public String oAuth(String code, ResourceServer resourceServer) {
         OAuthUserInfo oAuthUserInfo = oAuthService.requestOAuth(code, resourceServer);
-        return userRepository.existsByGithubId(oAuthUserInfo.getId()) ? login() : signup(oAuthUserInfo.getId(), oAuthUserInfo.getUsername());
+        return userRepository.existsByGithubId(oAuthUserInfo.getId())
+                ? login(oAuthUserInfo.getId())
+                : signup(oAuthUserInfo.getId(), oAuthUserInfo.getUsername());
     }
 
-    private String login() {
-        return "login";
+    private String login(Long githubUserId) {
+        User user = userRepository.findByGithubId(githubUserId).orElseThrow(() -> new IllegalArgumentException("가입되지 않은 사용자입니다."));
+        return jwtUtil.generateToken(user.getGithubId(), user.getUsername());
     }
 
-    private String signup(Long userId, String username) {
+    private String signup(Long githubUserId, String username) {
+        userRepository.findByGithubId(githubUserId).ifPresent(user -> {
+            throw new IllegalArgumentException("이미 가입된 사용자입니다.");
+        });
+
         User user = User.builder()
-                .githubId(userId)
+                .githubId(githubUserId)
                 .username(username)
                 .build();
         userRepository.save(user);
 
-        return jwtUtil.generateToken(userId, username);
+        return jwtUtil.generateToken(githubUserId, username);
     }
 }

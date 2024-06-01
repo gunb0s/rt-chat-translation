@@ -1,5 +1,6 @@
 package com.gunb0s.rt_chat_translation.auth.controller;
 
+import com.gunb0s.rt_chat_translation.auth.controller.dto.AuthResponseDto;
 import com.gunb0s.rt_chat_translation.auth.oauth.resource_server.ResourceServer;
 import com.gunb0s.rt_chat_translation.auth.service.AuthService;
 import com.gunb0s.rt_chat_translation.common.dto.ResponseDto;
@@ -19,12 +20,13 @@ public class AuthController {
 
     @PostMapping()
     public ResponseEntity<?> oAuth(@RequestParam String code, @RequestParam("resource_server") ResourceServer resourceServer) {
-        String accessToken = authService.oAuth(code, resourceServer);
+        AuthResponseDto responseDto = authService.oAuth(code, resourceServer);
         return ResponseEntity
-                .ok(ResponseDto.builder()
-                        .status(HttpStatus.CREATED.value())
-                        .data(accessToken)
-                        .build()
+                .ok(
+                        ResponseDto.builder()
+                            .status(HttpStatus.CREATED.value())
+                            .data(responseDto)
+                            .build()
                 );
     }
 }

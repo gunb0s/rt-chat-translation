@@ -2,7 +2,9 @@ package com.gunb0s.rt_chat_translation.auth.controller;
 
 import com.gunb0s.rt_chat_translation.auth.oauth.resource_server.ResourceServer;
 import com.gunb0s.rt_chat_translation.auth.service.AuthService;
+import com.gunb0s.rt_chat_translation.common.dto.ResponseDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,9 +18,13 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping()
-    public ResponseEntity<String> oAuth(@RequestParam String code, @RequestParam("resource_server") ResourceServer resourceServer) {
-        return ResponseEntity.ok().body(
-                authService.oAuth(code, resourceServer)
-        );
+    public ResponseEntity<?> oAuth(@RequestParam String code, @RequestParam("resource_server") ResourceServer resourceServer) {
+        String accessToken = authService.oAuth(code, resourceServer);
+        return ResponseEntity
+                .ok(ResponseDto.builder()
+                        .status(HttpStatus.CREATED.value())
+                        .data(accessToken)
+                        .build()
+                );
     }
 }

@@ -39,4 +39,9 @@ public class ChatRoomService {
     public List<ChatRoom> getMyChatRooms(String userId) {
         return chatRoomRepository.findAllByUserId(userId);
     }
+
+    public ChatRoom getChatRoomById(String chatId) {
+        return chatRoomRepository.findByChatRoomIdWithUser(chatId)
+                .orElseThrow(() -> new IllegalArgumentException("ChatRoom not found"));
+    }
 }

@@ -9,10 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -33,6 +30,20 @@ public class ChatRoomController {
                         ResponseDto.builder()
                                 .status(HttpStatus.CREATED.value())
                                 .data(chatRoom.getId())
+                                .build()
+                );
+    }
+
+    @GetMapping("{chatId}")
+    public ResponseEntity<?> getChatRoom(@PathVariable String chatId) {
+        ChatRoom chatRoom = chatRoomService.getChatRoomById(chatId);
+        ChatRoomDto chatRoomDto = new ChatRoomDto(chatRoom);
+
+        return ResponseEntity
+                .ok(
+                        ResponseDto.builder()
+                                .status(HttpStatus.OK.value())
+                                .data(chatRoomDto)
                                 .build()
                 );
     }

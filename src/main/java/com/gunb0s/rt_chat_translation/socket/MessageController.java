@@ -10,11 +10,6 @@ import org.springframework.stereotype.Controller;
 @Controller
 @RequiredArgsConstructor
 public class MessageController {
-
-    /**
-     * If a message is sent to /{chatId} destination, the message() method is called.
-     * The return value is broadcast to all subscribers of /sub/channel/{chatId}, as specified in the @SendTo annotation.
-     */
     @MessageMapping("/{chatId}")
     @SendTo("/sub/channel/{chatId}")
     public ChatMessageDto message(@DestinationVariable String chatId, ChatMessageDto chatMessageDto) {

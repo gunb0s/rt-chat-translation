@@ -1,6 +1,8 @@
 package com.gunb0s.rt_chat_translation.chatRoom.controller;
 
 import com.gunb0s.rt_chat_translation.auth.service.MyUserDetail;
+import com.gunb0s.rt_chat_translation.chatMessage.controller.dto.ChatMessageDto;
+import com.gunb0s.rt_chat_translation.chatMessage.entity.ChatMessage;
 import com.gunb0s.rt_chat_translation.chatRoom.controller.dto.ChatRoomDto;
 import com.gunb0s.rt_chat_translation.chatRoom.entity.ChatRoom;
 import com.gunb0s.rt_chat_translation.chatRoom.service.ChatRoomService;
@@ -34,9 +36,9 @@ public class ChatRoomController {
                 );
     }
 
-    @GetMapping("{chatId}")
-    public ResponseEntity<?> getChatRoom(@PathVariable String chatId) {
-        ChatRoom chatRoom = chatRoomService.getChatRoomById(chatId);
+    @GetMapping("{chatRoomId}")
+    public ResponseEntity<?> getChatRoom(@PathVariable String chatRoomId) {
+        ChatRoom chatRoom = chatRoomService.getChatRoomById(chatRoomId);
         ChatRoomDto chatRoomDto = new ChatRoomDto(chatRoom);
 
         return ResponseEntity
@@ -63,6 +65,20 @@ public class ChatRoomController {
                             .status(HttpStatus.OK.value())
                             .data(list)
                             .build()
+                );
+    }
+
+    @GetMapping("{chatRoomId}/messages")
+    public ResponseEntity<?> getChatRoomMessages(@PathVariable String chatRoomId) {
+        List<ChatMessage> chatMessages = chatRoomService.getChatRoomMessages(chatRoomId);
+        List<ChatMessageDto> list = chatMessages.stream().map(ChatMessageDto::new).toList();
+
+        return ResponseEntity
+                .ok(
+                        ResponseDto.builder()
+                                .status(HttpStatus.OK.value())
+                                .data(list)
+                                .build()
                 );
     }
 

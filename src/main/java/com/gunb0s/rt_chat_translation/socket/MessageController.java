@@ -13,6 +13,6 @@ public class MessageController {
     @MessageMapping("/{chatId}")
     @SendTo("/sub/channel/{chatId}")
     public ChatMessageDto message(@DestinationVariable String chatId, ChatMessageDto chatMessageDto) {
-        return new ChatMessageDto(chatMessageDto.getSender(), chatMessageDto.getContent());
+        return new ChatMessageDto(chatMessageDto.getSender(), chatMessageDto.getPayload());
     }
 }

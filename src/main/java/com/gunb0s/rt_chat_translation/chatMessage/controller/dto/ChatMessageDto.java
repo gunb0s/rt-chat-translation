@@ -1,6 +1,6 @@
-package com.gunb0s.rt_chat_translation.message;
+package com.gunb0s.rt_chat_translation.chatMessage.controller.dto;
 
-import com.gunb0s.rt_chat_translation.user.UserDto;
+import com.gunb0s.rt_chat_translation.user.controller.dto.UserDto;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

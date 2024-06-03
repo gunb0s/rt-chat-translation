@@ -1,4 +1,4 @@
-package com.gunb0s.rt_chat_translation.common;
+package com.gunb0s.rt_chat_translation.common.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;

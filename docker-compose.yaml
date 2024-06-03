@@ -1,0 +1,10 @@
+version: '3.8'
+services:
+  rt-chat-translation:
+    image: mysql:8.0.31
+    container_name: rt-chat-translation
+    environment:
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - "3306:3306"

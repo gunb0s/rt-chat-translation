@@ -1,6 +1,6 @@
 package com.gunb0s.rt_chat_translation.socket;
 
-import com.gunb0s.rt_chat_translation.message.ChatMessageDto;
+import com.gunb0s.rt_chat_translation.chatMessage.controller.dto.ChatMessageDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;

@@ -50,4 +50,8 @@ public class ChatRoomService {
     public List<ChatMessage> getChatRoomMessages(String chatRoomId) {
         return chatMessageRepository.findByChatRoomId(chatRoomId);
     }
+
+    public List<ChatRoom> getRecentChatRooms() {
+        return chatRoomRepository.findRecentChatRooms();
+    }
 }

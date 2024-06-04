@@ -71,7 +71,10 @@ public class ChatRoomController {
     @GetMapping("{chatRoomId}/messages")
     public ResponseEntity<?> getChatRoomMessages(@PathVariable String chatRoomId) {
         List<ChatMessage> chatMessages = chatRoomService.getChatRoomMessages(chatRoomId);
-        List<ChatMessageDto> list = chatMessages.stream().map(ChatMessageDto::new).toList();
+        List<ChatMessageDto> list = chatMessages
+                .stream()
+                .map(ChatMessageDto::new)
+                .toList();
 
         return ResponseEntity
                 .ok(
@@ -84,11 +87,18 @@ public class ChatRoomController {
 
     @GetMapping("/recent")
     public ResponseEntity<?> getRecentChatRooms() {
+        List<ChatRoom> recentChatRooms = chatRoomService.getRecentChatRooms();
+        List<ChatRoomDto> list = recentChatRooms
+                .stream()
+                .map(ChatRoomDto::new)
+                .toList();
+
         return ResponseEntity
                 .ok(
                         ResponseDto.builder()
-                            .status(HttpStatus.OK.value())
-                            .build()
+                                .status(HttpStatus.OK.value())
+                                .data(list)
+                                .build()
                 );
     }
 }

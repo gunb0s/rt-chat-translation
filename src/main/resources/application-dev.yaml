@@ -33,4 +33,6 @@ github:
     secret: ${GITHUB_CLIENT_SECRET}
 jwt:
   secret: ${JWT_SECRET}
+cors:
+  allowed-origins: "*"
 

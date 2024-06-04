@@ -1,5 +1,7 @@
 package com.gunb0s.rt_chat_translation.chatRoom.service;
 
+import com.gunb0s.rt_chat_translation.chatMessage.entity.ChatMessage;
+import com.gunb0s.rt_chat_translation.chatMessage.repository.ChatMessageRepository;
 import com.gunb0s.rt_chat_translation.chatRoom.entity.ChatRoom;
 import com.gunb0s.rt_chat_translation.chatRoom.entity.ChatRoomUser;
 import com.gunb0s.rt_chat_translation.chatRoom.entity.repository.ChatRoomRepository;
@@ -15,9 +17,9 @@ import java.util.List;
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class ChatRoomService {
-    private final ChatRoomRepository chatRoomService;
     private final UserRepository userRepository;
     private final ChatRoomRepository chatRoomRepository;
+    private final ChatMessageRepository chatMessageRepository;
 
     @Transactional
     public ChatRoom createChatRoom(String userId) {
@@ -33,10 +35,19 @@ public class ChatRoomService {
                 .build();
 
         chatRoom.addUser(chatRoomUser);
-        return chatRoomService.save(chatRoom);
+        return chatRoomRepository.save(chatRoom);
     }
 
     public List<ChatRoom> getMyChatRooms(String userId) {
         return chatRoomRepository.findAllByUserId(userId);
+    }
+
+    public ChatRoom getChatRoomById(String chatId) {
+        return chatRoomRepository.findByChatRoomIdWithUser(chatId)
+                .orElseThrow(() -> new IllegalArgumentException("ChatRoom not found"));
+    }
+
+    public List<ChatMessage> getChatRoomMessages(String chatRoomId) {
+        return chatMessageRepository.findByChatRoomId(chatRoomId);
     }
 }

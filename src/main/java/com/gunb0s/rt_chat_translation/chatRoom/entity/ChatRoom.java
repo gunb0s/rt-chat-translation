@@ -1,5 +1,6 @@
 package com.gunb0s.rt_chat_translation.chatRoom.entity;
 
+import com.gunb0s.rt_chat_translation.chatMessage.entity.ChatMessage;
 import com.gunb0s.rt_chat_translation.common.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.Builder;
@@ -23,6 +24,9 @@ public class ChatRoom extends BaseEntity {
 
     @OneToMany(mappedBy = "chatRoom", cascade = CascadeType.ALL)
     private final List<ChatRoomUser> chatRoomUsers = new ArrayList<>();
+
+    @OneToMany(mappedBy = "chatRoom")
+    private final List<ChatMessage> chatMessages = new ArrayList<>();
 
     @Builder
     public ChatRoom(String name) {

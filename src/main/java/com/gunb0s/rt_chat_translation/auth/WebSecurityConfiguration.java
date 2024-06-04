@@ -2,6 +2,7 @@ package com.gunb0s.rt_chat_translation.auth;
 
 import com.gunb0s.rt_chat_translation.auth.jwt.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -16,6 +17,15 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @RequiredArgsConstructor
 public class WebSecurityConfiguration {
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
+
+    public static final String[] PUBLIC_URLS = {
+            "/auth/**",
+            "/ws/**",
+    };
+
+    @Value("${cors.allowed-origins}")
+    private String[] allowedOrigins;
+
     @Bean
     public SecurityFilterChain webApplicationSecurity(HttpSecurity http) throws Exception {
         http
@@ -25,8 +35,7 @@ public class WebSecurityConfiguration {
                 )
                 .authorizeHttpRequests(
                         authorize -> authorize
-                                .requestMatchers("/auth/**").permitAll()
-                                .requestMatchers("/ws/**").permitAll()
+                                .requestMatchers(PUBLIC_URLS).permitAll()
                                 .anyRequest().authenticated()
                 )
                 .httpBasic(AbstractHttpConfigurer::disable);

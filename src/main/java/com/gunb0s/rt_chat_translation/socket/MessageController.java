@@ -1,7 +1,7 @@
 package com.gunb0s.rt_chat_translation.socket;
 
-import com.gunb0s.rt_chat_translation.chatMessage.controller.dto.ChatMessageDto;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
@@ -9,15 +9,12 @@ import org.springframework.stereotype.Controller;
 
 @Controller
 @RequiredArgsConstructor
+@Slf4j
 public class MessageController {
-
-    /**
-     * If a message is sent to /{chatId} destination, the message() method is called.
-     * The return value is broadcast to all subscribers of /sub/channel/{chatId}, as specified in the @SendTo annotation.
-     */
     @MessageMapping("/{chatId}")
     @SendTo("/sub/channel/{chatId}")
-    public ChatMessageDto message(@DestinationVariable String chatId, ChatMessageDto chatMessageDto) {
-        return new ChatMessageDto(chatMessageDto.getSender(), chatMessageDto.getContent());
+    public ChatMessage message(@DestinationVariable String chatId, ChatMessage chatMessageDto) {
+        log.info("chatId: {}", chatId);
+        return new ChatMessage(chatMessageDto.sender(), chatMessageDto.payload());
     }
 }

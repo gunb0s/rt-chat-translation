@@ -1,6 +1,8 @@
 package com.gunb0s.rt_chat_translation.chatRoom.controller;
 
 import com.gunb0s.rt_chat_translation.auth.service.MyUserDetail;
+import com.gunb0s.rt_chat_translation.chatMessage.controller.dto.ChatMessageDto;
+import com.gunb0s.rt_chat_translation.chatMessage.entity.ChatMessage;
 import com.gunb0s.rt_chat_translation.chatRoom.controller.dto.ChatRoomDto;
 import com.gunb0s.rt_chat_translation.chatRoom.entity.ChatRoom;
 import com.gunb0s.rt_chat_translation.chatRoom.service.ChatRoomService;
@@ -9,10 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -37,6 +36,20 @@ public class ChatRoomController {
                 );
     }
 
+    @GetMapping("{chatRoomId}")
+    public ResponseEntity<?> getChatRoom(@PathVariable String chatRoomId) {
+        ChatRoom chatRoom = chatRoomService.getChatRoomById(chatRoomId);
+        ChatRoomDto chatRoomDto = new ChatRoomDto(chatRoom);
+
+        return ResponseEntity
+                .ok(
+                        ResponseDto.builder()
+                                .status(HttpStatus.OK.value())
+                                .data(chatRoomDto)
+                                .build()
+                );
+    }
+
     @GetMapping("/my")
     public ResponseEntity<?> getMyChatRooms(Authentication authentication) {
         MyUserDetail myUserDetail = (MyUserDetail) authentication.getPrincipal();
@@ -52,6 +65,20 @@ public class ChatRoomController {
                             .status(HttpStatus.OK.value())
                             .data(list)
                             .build()
+                );
+    }
+
+    @GetMapping("{chatRoomId}/messages")
+    public ResponseEntity<?> getChatRoomMessages(@PathVariable String chatRoomId) {
+        List<ChatMessage> chatMessages = chatRoomService.getChatRoomMessages(chatRoomId);
+        List<ChatMessageDto> list = chatMessages.stream().map(ChatMessageDto::new).toList();
+
+        return ResponseEntity
+                .ok(
+                        ResponseDto.builder()
+                                .status(HttpStatus.OK.value())
+                                .data(list)
+                                .build()
                 );
     }
 

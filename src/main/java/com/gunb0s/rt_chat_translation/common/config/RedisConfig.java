@@ -1,7 +1,6 @@
 package com.gunb0s.rt_chat_translation.common.config;
 
-import com.gunb0s.rt_chat_translation.chatMessage.controller.dto.ChatMessageDto;
-import lombok.extern.slf4j.Slf4j;
+import com.gunb0s.rt_chat_translation.chatMessage.entity.ChatMessage;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
@@ -12,11 +11,10 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 
 @EnableCaching
 @Configuration
-@Slf4j
 public class RedisConfig {
     @Value("${spring.data.redis.host}")
     private String host;
@@ -30,8 +28,8 @@ public class RedisConfig {
     }
 
     @Bean
-    public RedisTemplate<String, ArrayList<ChatMessageDto>> redisTemplate(RedisConnectionFactory redisConnectionFactory) {
-        RedisTemplate<String, ArrayList<ChatMessageDto>> template = new RedisTemplate<>();
+    public RedisTemplate<String, LinkedList<ChatMessage>> redisTemplate(RedisConnectionFactory redisConnectionFactory) {
+        RedisTemplate<String, LinkedList<ChatMessage>> template = new RedisTemplate<>();
         template.setConnectionFactory(redisConnectionFactory);
         template.setKeySerializer(new StringRedisSerializer());
         template.setValueSerializer(new GenericJackson2JsonRedisSerializer());

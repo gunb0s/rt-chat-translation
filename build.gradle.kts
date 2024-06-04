@@ -35,6 +35,9 @@ dependencies {
     // javax.xml.bind
     implementation("javax.xml.bind:jaxb-api:2.4.0-b180830.0359")
 
+    // redis
+    implementation("org.springframework.boot:spring-boot-starter-data-redis")
+
     testImplementation("org.springframework.security:spring-security-test")
     compileOnly("org.projectlombok:lombok")
     annotationProcessor("org.projectlombok:lombok")

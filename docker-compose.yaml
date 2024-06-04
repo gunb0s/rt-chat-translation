@@ -8,3 +8,8 @@ services:
       MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
     ports:
       - "3306:3306"
+  rt-chat-redis:
+    image: redis:7.2.5
+    container_name: rt-chat-redis
+    ports:
+      - "6379:6379"

@@ -1,24 +1,25 @@
 package com.gunb0s.rt_chat_translation.chatMessage.repository;
 
-import com.gunb0s.rt_chat_translation.chatMessage.controller.dto.ChatMessageDto;
+import com.gunb0s.rt_chat_translation.chatMessage.entity.ChatMessage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.concurrent.TimeUnit;
 
 @Repository
 @RequiredArgsConstructor
 public class RedisChatMessageCache {
-    private final RedisTemplate<String, ArrayList<ChatMessageDto>> redisTemplate;
+    private final RedisTemplate<String, LinkedList<ChatMessage>> redisTemplate;
 
     @Value("${spring.data.redis.expire}")
     private int expire;
 
-    public void put(String roomId, ArrayList<ChatMessageDto> chatMessages) {
-        redisTemplate.opsForValue().set(roomId, chatMessages);
+    public void put(String roomId, Queue<ChatMessage> chatMessages) {
+        redisTemplate.opsForValue().set(roomId, new LinkedList<>(chatMessages));
         redisTemplate.expire(roomId, expire, TimeUnit.MINUTES);
     }
 
@@ -26,7 +27,7 @@ public class RedisChatMessageCache {
         return Boolean.TRUE.equals(redisTemplate.hasKey(roomId));
     }
 
-    public ArrayList<ChatMessageDto> get(String roomId) {
+    public LinkedList<ChatMessage> get(String roomId) {
         return redisTemplate.opsForValue().get(roomId);
     }
 

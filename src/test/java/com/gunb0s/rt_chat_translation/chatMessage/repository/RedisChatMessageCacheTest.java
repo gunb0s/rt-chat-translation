@@ -1,12 +1,13 @@
 package com.gunb0s.rt_chat_translation.chatMessage.repository;
 
-import com.gunb0s.rt_chat_translation.chatMessage.controller.dto.ChatMessageDto;
-import com.gunb0s.rt_chat_translation.user.controller.dto.UserDto;
+import com.gunb0s.rt_chat_translation.chatMessage.entity.ChatMessage;
+import com.gunb0s.rt_chat_translation.chatRoom.entity.ChatRoom;
+import com.gunb0s.rt_chat_translation.user.entity.User;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -19,23 +20,22 @@ class RedisChatMessageCacheTest {
     @Test
     void put() {
         // create chatMessage ArrayList
-        UserDto userDto = UserDto.builder()
-                .id("userId")
-                .username("userName")
-                .build();
-        ChatMessageDto chatMessageDto = ChatMessageDto.builder()
-                .sender(userDto)
-                .payload("payload")
+        User user = User.builder().build();
+        ChatRoom chatRoom = ChatRoom.builder().build();
+        ChatMessage chatMessage = ChatMessage.builder()
+                .user(user)
+                .chatRoom(chatRoom)
+                .payload("test")
                 .build();
 
         // put chatMessage ArrayList
-        ArrayList<ChatMessageDto> chatMessages = new ArrayList<>(List.of(chatMessageDto));
+        LinkedList<ChatMessage> chatMessages = new LinkedList<>(List.of(chatMessage));
         redisChatMessageCache.put("roomId", chatMessages);
 
         // get chatMessage ArrayList
-        List<ChatMessageDto> chatMessagesFromRedis = redisChatMessageCache.get("roomId");
-        ChatMessageDto first = chatMessagesFromRedis.getFirst();
-        ChatMessageDto first1 = chatMessages.getFirst();
+        List<ChatMessage> chatMessagesFromRedis = redisChatMessageCache.get("roomId");
+        ChatMessage first = chatMessagesFromRedis.getFirst();
+        ChatMessage first1 = chatMessages.getFirst();
 
         assertThat(first.getPayload()).isEqualTo(first1.getPayload());
 

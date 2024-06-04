@@ -24,6 +24,7 @@ public class ChatMessageDto {
                 .username(chatMessage.getUser().getUsername())
                 .build();
         this.payload = chatMessage.getPayload();
+        this.createdAt = chatMessage.getCreatedDate();
     }
 
     @Builder

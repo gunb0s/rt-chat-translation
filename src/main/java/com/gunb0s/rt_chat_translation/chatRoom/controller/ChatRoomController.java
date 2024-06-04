@@ -1,14 +1,11 @@
 package com.gunb0s.rt_chat_translation.chatRoom.controller;
 
 import com.gunb0s.rt_chat_translation.auth.service.MyUserDetail;
-import com.gunb0s.rt_chat_translation.chatMessage.controller.dto.ChatMessageDto;
-import com.gunb0s.rt_chat_translation.chatMessage.entity.ChatMessage;
 import com.gunb0s.rt_chat_translation.chatRoom.controller.dto.ChatRoomDto;
 import com.gunb0s.rt_chat_translation.chatRoom.entity.ChatRoom;
 import com.gunb0s.rt_chat_translation.chatRoom.service.ChatRoomService;
 import com.gunb0s.rt_chat_translation.common.dto.ResponseDto;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -66,23 +63,6 @@ public class ChatRoomController {
                             .status(HttpStatus.OK.value())
                             .data(list)
                             .build()
-                );
-    }
-
-    @GetMapping("{chatRoomId}/messages")
-    public ResponseEntity<?> getChatRoomMessages(@PathVariable String chatRoomId, Pageable pageable) {
-        List<ChatMessage> chatMessages = chatRoomService.getChatRoomMessages(chatRoomId, pageable);
-        List<ChatMessageDto> list = chatMessages
-                .stream()
-                .map(ChatMessageDto::new)
-                .toList();
-
-        return ResponseEntity
-                .ok(
-                        ResponseDto.builder()
-                                .status(HttpStatus.OK.value())
-                                .data(list)
-                                .build()
                 );
     }
 

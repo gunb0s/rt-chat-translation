@@ -5,11 +5,14 @@ import com.gunb0s.rt_chat_translation.user.controller.dto.UserDto;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.time.LocalDateTime;
+
 @Getter
 public class ChatMessageDto {
     private Long id;
     private UserDto sender;
     private String payload;
+    private LocalDateTime createdAt;
 
     public ChatMessageDto(ChatMessage chatMessage) {
         this.id = chatMessage.getId();

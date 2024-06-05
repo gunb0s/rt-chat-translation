@@ -1,5 +1,6 @@
 package com.gunb0s.rt_chat_translation.chatMessage.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.gunb0s.rt_chat_translation.chatRoom.entity.ChatRoom;
 import com.gunb0s.rt_chat_translation.user.entity.User;
 import jakarta.persistence.*;
@@ -36,6 +37,7 @@ public class ChatMessage {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "chat_room_id")
     private ChatRoom chatRoom;

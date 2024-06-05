@@ -1,3 +1,8 @@
+### get chat room detail
 GET http://localhost:8080/chat-room/85c0c80e-7125-478a-ae36-d9bd1405ee53
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI5NjUyODgzMyIsInVzZXJuYW1lIjoiY2FpbiIsImlhdCI6MTcxNzQxODMwMywiZXhwIjoxNzE3NDU0MzAzfQ.nnJ57-fOjGlVheAeJtRHSYG4tg741zCnm61DluAF-mQ
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI5NjUyODgzMyIsInVzZXJuYW1lIjoiY2FpbiIsImlhdCI6MTcxNzU5NTE5NSwiZXhwIjoxNzE3NjMxMTk1fQ.d8CkElKQxRNCb4mn9dXfeSFvIcQYf-FyIbAFCDkbEDU
+
+### get recent chat room
+GET http://localhost:8080/chat-room/recent
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI5NjUyODgzMyIsInVzZXJuYW1lIjoiY2FpbiIsImlhdCI6MTcxNzU5NTE5NSwiZXhwIjoxNzE3NjMxMTk1fQ.d8CkElKQxRNCb4mn9dXfeSFvIcQYf-FyIbAFCDkbEDU
 

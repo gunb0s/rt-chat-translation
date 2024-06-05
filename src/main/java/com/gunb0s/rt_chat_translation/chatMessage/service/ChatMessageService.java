@@ -2,6 +2,7 @@ package com.gunb0s.rt_chat_translation.chatMessage.service;
 
 import com.gunb0s.rt_chat_translation.chatMessage.controller.dto.ChatMessageDto;
 import com.gunb0s.rt_chat_translation.chatMessage.entity.ChatMessage;
+import com.gunb0s.rt_chat_translation.chatMessage.repository.ChatMessageQueryRepository;
 import com.gunb0s.rt_chat_translation.chatMessage.repository.ChatMessageRepository;
 import com.gunb0s.rt_chat_translation.chatMessage.repository.RedisChatMessageCache;
 import com.gunb0s.rt_chat_translation.chatRoom.entity.ChatRoom;
@@ -28,6 +29,8 @@ public class ChatMessageService {
     private final ChatRoomRepository chatRoomRepository;
     private final ChatMessageQueryRepository chatMessageQueryRepository;
     private final RedisChatMessageCache cache;
+
+
     private static final int MAX_CHAT_MESSAGE_CACHE_SIZE = 50;
     private static final int CHAT_MESSAGE_COMMIT_SIZE = 30;
 
@@ -52,7 +55,8 @@ public class ChatMessageService {
             chatMessages.add(chatMessage);
             cache.put(chatId, chatMessages);
         } else {
-            Queue<ChatMessage> chatMessages = cache.get(chatId);
+            // change list to Queue
+            Queue<ChatMessage> chatMessages = new LinkedList<>(cache.get(chatId));
             chatMessages.add(chatMessage);
             if (chatMessages.size() > MAX_CHAT_MESSAGE_CACHE_SIZE) {
                 Queue<ChatMessage> commitChatMessageDtos = new LinkedList<>();
@@ -68,19 +72,20 @@ public class ChatMessageService {
         List<ChatMessage> messages = new ArrayList<>();
         if (!cache.containsKey(chatId)) {
             // Cache Miss
-            List<ChatMessage> messagesFromDB = getMessageFromDB(chatId, pageable);
+            Page<ChatMessage> messagesFromDB = getMessageFromDB(chatId, pageable);
+            List<ChatMessage> messageList = messagesFromDB.getContent();
             if (!messagesFromDB.isEmpty()) {
-                Queue<ChatMessage> chatMessageWarmUp = new LinkedList<>(messagesFromDB);
+                Queue<ChatMessage> chatMessageWarmUp = new LinkedList<>(messageList);
                 cache.put(chatId, chatMessageWarmUp);
-                messages = messagesFromDB;
+                messages = messageList;
             }
         } else {
             // Cache Hit
-            messages = cache.get(chatId).stream().toList();
+            List<ChatMessage> list = cache.get(chatId).stream().toList();
+            messages = list.subList(0, Math.min(list.size(), pageable.getPageSize()));
         }
 
-        int size = pageable.getPageSize();
-        return messages.subList(0, size);
+        return messages;
     }
 
     private Page<ChatMessage> getMessageFromDB(String chatId, Pageable pageable) {

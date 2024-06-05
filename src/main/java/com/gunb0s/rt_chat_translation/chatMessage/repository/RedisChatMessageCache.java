@@ -7,13 +7,14 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Repository;
 
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.TimeUnit;
 
 @Repository
 @RequiredArgsConstructor
 public class RedisChatMessageCache {
-    private final RedisTemplate<String, LinkedList<ChatMessage>> redisTemplate;
+    private final RedisTemplate<String, List<ChatMessage>> redisTemplate;
 
     @Value("${spring.data.redis.expire}")
     private int expire;
@@ -27,7 +28,7 @@ public class RedisChatMessageCache {
         return Boolean.TRUE.equals(redisTemplate.hasKey(roomId));
     }
 
-    public LinkedList<ChatMessage> get(String roomId) {
+    public List<ChatMessage> get(String roomId) {
         return redisTemplate.opsForValue().get(roomId);
     }
 

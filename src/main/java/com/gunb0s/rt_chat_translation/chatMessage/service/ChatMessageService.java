@@ -9,6 +9,7 @@ import com.gunb0s.rt_chat_translation.chatRoom.entity.repository.ChatRoomReposit
 import com.gunb0s.rt_chat_translation.user.entity.User;
 import com.gunb0s.rt_chat_translation.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,6 +26,7 @@ public class ChatMessageService {
     private final ChatMessageRepository chatMessageRepository;
     private final UserRepository userRepository;
     private final ChatRoomRepository chatRoomRepository;
+    private final ChatMessageQueryRepository chatMessageQueryRepository;
     private final RedisChatMessageCache cache;
     private static final int MAX_CHAT_MESSAGE_CACHE_SIZE = 50;
     private static final int CHAT_MESSAGE_COMMIT_SIZE = 30;
@@ -81,8 +83,8 @@ public class ChatMessageService {
         return messages.subList(0, size);
     }
 
-    private List<ChatMessage> getMessageFromDB(String chatId, Pageable pageable) {
-        return chatMessageRepository.findAllByChatRoomId(chatId, pageable);
+    private Page<ChatMessage> getMessageFromDB(String chatId, Pageable pageable) {
+        return chatMessageQueryRepository.findAllByChatRoomId(chatId, pageable);
     }
 
     private void commitChatMessage(Queue<ChatMessage> chatMessages) {

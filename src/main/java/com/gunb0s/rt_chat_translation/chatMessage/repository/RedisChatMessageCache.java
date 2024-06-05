@@ -1,42 +1,48 @@
 package com.gunb0s.rt_chat_translation.chatMessage.repository;
 
 import com.gunb0s.rt_chat_translation.chatMessage.entity.ChatMessage;
+import com.gunb0s.rt_chat_translation.common.redis.model.ChatRoomMessages;
+import com.gunb0s.rt_chat_translation.common.redis.repository.ChatRoomMessagesRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Repository;
 
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Queue;
-import java.util.concurrent.TimeUnit;
 
 @Repository
 @RequiredArgsConstructor
 public class RedisChatMessageCache {
-    private final RedisTemplate<String, List<ChatMessage>> redisTemplate;
+    private final ChatRoomMessagesRepository chatRoomMessagesRepository;
 
     @Value("${spring.data.redis.expire}")
     private int expire;
 
     public void put(String roomId, Queue<ChatMessage> chatMessages) {
-        redisTemplate.opsForValue().set(roomId, new LinkedList<>(chatMessages));
-        redisTemplate.expire(roomId, expire, TimeUnit.MINUTES);
+        LinkedList<ChatMessage> chatMessageList = new LinkedList<>(chatMessages);
+        ChatRoomMessages chatRoomMessages = ChatRoomMessages.builder()
+                .id(roomId)
+                .chatMessages(chatMessageList)
+                .build();
+
+        chatRoomMessagesRepository.save(chatRoomMessages);
     }
 
     public boolean containsKey(String roomId) {
-        return Boolean.TRUE.equals(redisTemplate.hasKey(roomId));
+        return Boolean.TRUE.equals(chatRoomMessagesRepository.existsById(roomId));
     }
 
-    public List<ChatMessage> get(String roomId) {
-        return redisTemplate.opsForValue().get(roomId);
+    public LinkedList<ChatMessage> get(String roomId) {
+        return chatRoomMessagesRepository.findById(roomId)
+                .map(ChatRoomMessages::getChatMessages)
+                .orElse(new LinkedList<>());
     }
 
     public void delete(String roomId) {
-        redisTemplate.delete(roomId);
+        chatRoomMessagesRepository.deleteById(roomId);
     }
 
     public void deleteAll() {
-        redisTemplate.discard();
+        chatRoomMessagesRepository.deleteAll();
     }
 }

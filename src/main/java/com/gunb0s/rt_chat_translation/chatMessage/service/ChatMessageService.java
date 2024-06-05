@@ -56,7 +56,7 @@ public class ChatMessageService {
             cache.put(chatId, chatMessages);
         } else {
             // change list to Queue
-            Queue<ChatMessage> chatMessages = new LinkedList<>(cache.get(chatId));
+            Queue<ChatMessage> chatMessages = cache.get(chatId);
             chatMessages.add(chatMessage);
             if (chatMessages.size() > MAX_CHAT_MESSAGE_CACHE_SIZE) {
                 Queue<ChatMessage> commitChatMessageDtos = new LinkedList<>();

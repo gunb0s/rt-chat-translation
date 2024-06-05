@@ -28,8 +28,10 @@ spring:
 
 logging:
   level:
+#    root: trace
     org.hibernate.SQL: debug
     org.hibernate.orm.jdbc.bind: trace
+
 google:
   cloud:
     credentials:

@@ -58,6 +58,7 @@ public class ChatMessageService {
                 }
                 commitChatMessage(commitChatMessageDtos);
             }
+            cache.put(chatId, chatMessages);
         }
     }
 

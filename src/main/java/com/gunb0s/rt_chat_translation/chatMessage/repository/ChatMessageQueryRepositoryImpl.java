@@ -26,11 +26,13 @@ public class ChatMessageQueryRepositoryImpl implements ChatMessageQueryRepositor
         List<ChatMessage> results = queryFactory
                 .selectFrom(chatMessage)
                 .join(chatMessage.user).fetchJoin()
+                .where(chatMessage.chatRoom.id.eq(chatRoomId))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
 
         JPAQuery<Long> countQuery = queryFactory.select(chatMessage.count())
+                .where(chatMessage.chatRoom.id.eq(chatRoomId))
                 .from(chatMessage);
 
         return PageableExecutionUtils.getPage(results, pageable, countQuery::fetchOne);

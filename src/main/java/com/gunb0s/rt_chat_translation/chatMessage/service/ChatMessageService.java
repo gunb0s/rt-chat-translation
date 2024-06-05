@@ -5,7 +5,6 @@ import com.gunb0s.rt_chat_translation.chatMessage.entity.ChatMessage;
 import com.gunb0s.rt_chat_translation.chatMessage.repository.ChatMessageQueryRepository;
 import com.gunb0s.rt_chat_translation.chatMessage.repository.ChatMessageRepository;
 import com.gunb0s.rt_chat_translation.chatMessage.repository.RedisChatMessageCache;
-import com.gunb0s.rt_chat_translation.chatRoom.entity.ChatRoom;
 import com.gunb0s.rt_chat_translation.chatRoom.entity.repository.ChatRoomRepository;
 import com.gunb0s.rt_chat_translation.user.entity.User;
 import com.gunb0s.rt_chat_translation.user.repository.UserRepository;
@@ -39,14 +38,9 @@ public class ChatMessageService {
         User user = userRepository.findById(chatMessageDto.getSender().getId()).orElseThrow(
                 () -> new IllegalArgumentException("존재하지 않는 사용자입니다.")
         );
-        ChatRoom chatRoom = chatRoomRepository.findById(chatId).orElseThrow(
-                () -> new IllegalArgumentException("존재하지 않는 채팅방입니다.")
-        );
-
         ChatMessage chatMessage = ChatMessage.builder()
                 .payload(chatMessageDto.getPayload())
                 .user(user)
-                .chatRoom(chatRoom)
                 .createdAt(chatMessageDto.getCreatedAt())
                 .build();
 
@@ -55,7 +49,6 @@ public class ChatMessageService {
             chatMessages.add(chatMessage);
             cache.put(chatId, chatMessages);
         } else {
-            // change list to Queue
             Queue<ChatMessage> chatMessages = cache.get(chatId);
             chatMessages.add(chatMessage);
             if (chatMessages.size() > MAX_CHAT_MESSAGE_CACHE_SIZE) {

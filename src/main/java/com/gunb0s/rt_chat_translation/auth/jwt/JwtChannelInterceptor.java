@@ -28,10 +28,17 @@ public class JwtChannelInterceptor implements ChannelInterceptor {
     @SneakyThrows
     @Override
     public Message<?> preSend(Message<?> message, MessageChannel channel) {
+        log.info("preSend message: {}", message);
         StompHeaderAccessor accessor = MessageHeaderAccessor.getAccessor(message, StompHeaderAccessor.class);
         if (accessor.getCommand() == StompCommand.CONNECT) {
-            String accessToken = accessor.getFirstNativeHeader("Authorization");
-            if (accessToken == null || !jwtUtil.validateToken(accessToken)) {
+            String header = accessor.getFirstNativeHeader("Authorization");
+            if (header == null || !header.startsWith("Bearer ")) {
+                log.info("Invalid Header");
+                throw new AuthException("Invalid Header");
+            }
+            String accessToken = getBearerToken(header);
+            if (!jwtUtil.validateToken(accessToken)) {
+                log.info("WebSocket connection failed: Invalid token");
                 throw new AuthException("Invalid token");
             }
 
@@ -43,5 +50,9 @@ public class JwtChannelInterceptor implements ChannelInterceptor {
         }
 
         return message;
+    }
+
+    private String getBearerToken(String token) {
+        return token.substring(7);
     }
 }

@@ -27,7 +27,7 @@ public class ChatMessageQueryRepositoryImpl implements ChatMessageQueryRepositor
                 .selectFrom(chatMessage)
                 .join(chatMessage.user).fetchJoin()
                 .where(chatMessage.chatRoom.id.eq(chatRoomId))
-                .offset(pageable.getOffset())
+                .orderBy(chatMessage.createdDate.desc())
                 .limit(pageable.getPageSize())
                 .fetch();
 

@@ -9,15 +9,11 @@ import com.gunb0s.rt_chat_translation.chatRoom.entity.repository.ChatRoomReposit
 import com.gunb0s.rt_chat_translation.user.entity.User;
 import com.gunb0s.rt_chat_translation.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
+import java.util.*;
 
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -66,9 +62,8 @@ public class ChatMessageService {
         List<ChatMessage> messages = new ArrayList<>();
         if (!cache.containsKey(chatId)) {
             // Cache Miss
-            Page<ChatMessage> messagesFromDB = getMessageFromDB(chatId, pageable);
-            List<ChatMessage> messageList = messagesFromDB.getContent();
-            if (!messagesFromDB.isEmpty()) {
+            List<ChatMessage> messageList = getMessageFromDB(chatId, pageable);
+            if (!messageList.isEmpty()) {
                 Queue<ChatMessage> chatMessageWarmUp = new LinkedList<>(messageList);
                 cache.put(chatId, chatMessageWarmUp);
                 messages = messageList;
@@ -82,8 +77,12 @@ public class ChatMessageService {
         return messages;
     }
 
-    private Page<ChatMessage> getMessageFromDB(String chatId, Pageable pageable) {
-        return chatMessageQueryRepository.findAllByChatRoomId(chatId, pageable);
+    private List<ChatMessage> getMessageFromDB(String chatId, Pageable pageable) {
+        return chatMessageQueryRepository
+                .findAllByChatRoomId(chatId, pageable)
+                .stream()
+                .sorted(Comparator.comparing(ChatMessage::getCreatedDate))
+                .toList();
     }
 
     private void commitChatMessage(Queue<ChatMessage> chatMessages) {

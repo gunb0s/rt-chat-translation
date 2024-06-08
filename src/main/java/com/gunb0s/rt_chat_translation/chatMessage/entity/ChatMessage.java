@@ -37,6 +37,10 @@ public class ChatMessage {
     @JoinColumn(name = "user_id")
     private User user;
 
+    public void setChatRoom(ChatRoom chatRoom) {
+        this.chatRoom = chatRoom;
+    }
+
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "chat_room_id")

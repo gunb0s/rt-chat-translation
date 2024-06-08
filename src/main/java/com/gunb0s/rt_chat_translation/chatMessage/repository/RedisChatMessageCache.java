@@ -2,6 +2,8 @@ package com.gunb0s.rt_chat_translation.chatMessage.repository;
 
 import com.gunb0s.rt_chat_translation.chatMessage.entity.ChatMessage;
 import com.gunb0s.rt_chat_translation.common.redis.model.ChatRoomMessages;
+import com.gunb0s.rt_chat_translation.common.redis.model.ChatRoomMessagesCopy;
+import com.gunb0s.rt_chat_translation.common.redis.repository.ChatRoomMessagesCopyRepository;
 import com.gunb0s.rt_chat_translation.common.redis.repository.ChatRoomMessagesRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -14,6 +16,7 @@ import java.util.Queue;
 @RequiredArgsConstructor
 public class RedisChatMessageCache {
     private final ChatRoomMessagesRepository chatRoomMessagesRepository;
+    private final ChatRoomMessagesCopyRepository chatRoomMessagesCopyRepository;
 
     @Value("${spring.data.redis.expire}")
     private int expire;
@@ -24,8 +27,10 @@ public class RedisChatMessageCache {
                 .id(roomId)
                 .chatMessages(chatMessageList)
                 .build();
+        ChatRoomMessagesCopy chatRoomMessagesCopy = chatRoomMessages.copy();
 
         chatRoomMessagesRepository.save(chatRoomMessages);
+        chatRoomMessagesCopyRepository.save(chatRoomMessagesCopy);
     }
 
     public boolean containsKey(String roomId) {

@@ -9,15 +9,8 @@ import java.util.LinkedList;
 
 @Data
 @Builder
-@RedisHash(timeToLive = 5)
-public class ChatRoomMessages {
+@RedisHash()
+public class ChatRoomMessagesCopy {
     private String id;
     private LinkedList<ChatMessage> chatMessages;
-
-    public ChatRoomMessagesCopy copy() {
-        return ChatRoomMessagesCopy.builder()
-                .id(this.id)
-                .chatMessages(this.chatMessages)
-                .build();
-    }
 }

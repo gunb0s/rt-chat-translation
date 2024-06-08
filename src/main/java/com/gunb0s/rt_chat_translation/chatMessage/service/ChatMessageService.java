@@ -60,9 +60,13 @@ public class ChatMessageService {
 
     public List<ChatMessage> getMessages(String chatId, Pageable pageable) {
         List<ChatMessage> messages = new ArrayList<>();
-        if (!cache.containsKey(chatId)) {
+        LinkedList<ChatMessage> list = cache.get(chatId);
+        if (!cache.containsKey(chatId) || list.isEmpty()) {
             // Cache Miss
-            List<ChatMessage> messageList = getMessageFromDB(chatId, pageable);
+            List<ChatMessage> messageList = getMessageFromDB(chatId, pageable)
+                    .stream()
+                    .sorted(Comparator.comparing(ChatMessage::getCreatedDate))
+                    .toList();
             if (!messageList.isEmpty()) {
                 Queue<ChatMessage> chatMessageWarmUp = new LinkedList<>(messageList);
                 cache.put(chatId, chatMessageWarmUp);
@@ -70,8 +74,9 @@ public class ChatMessageService {
             }
         } else {
             // Cache Hit
-            List<ChatMessage> list = cache.get(chatId).stream().toList();
-            messages = list.subList(0, Math.min(list.size(), pageable.getPageSize()));
+            messages = list
+                    .stream()
+                    .toList();
         }
 
         return messages;
@@ -81,7 +86,6 @@ public class ChatMessageService {
         return chatMessageQueryRepository
                 .findAllByChatRoomId(chatId, pageable)
                 .stream()
-                .sorted(Comparator.comparing(ChatMessage::getCreatedDate))
                 .toList();
     }
 

@@ -51,7 +51,9 @@ public class RedisKeyExpiredListener extends KeyExpirationEventMessageListener {
         ChatRoom chatRoom = chatRoomRepository.findById(roomId).orElseThrow();
         List<ChatMessage> chatMessages = chatRoomMessagesCopy.getChatMessages()
                 .stream()
-                .peek(msg -> msg.setChatRoom(chatRoom)).toList();
+                .peek(msg -> msg.setChatRoom(chatRoom))
+                .filter(msg -> msg.getId() == null)
+                .toList();
 
         chatMessageRepository.saveAll(chatMessages);
         chatRoomMessagesCopyRepository.delete(chatRoomMessagesCopy);

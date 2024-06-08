@@ -5,7 +5,7 @@ spring:
       on-profile: dev
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/${DB_NAME}
+    url: jdbc:mysql://localhost:3306/${DB_NAME}?rewriteBatchedStatements=true
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
   application:
@@ -15,6 +15,9 @@ spring:
       ddl-auto: update
     properties:
       hibernate:
+        jdbc.batch_size: 50
+        order_inserts: true
+        order_updates: true
         format_sql: true
         highlight_sql: true
         use_sql_comments: true

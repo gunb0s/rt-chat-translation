@@ -38,6 +38,6 @@ services:
     environment:
       KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: rt-chat-kafka-1:29092
     ports:
-      - "8080:8080"
+      - "8083:8080"
     depends_on:
       - rt-chat-kafka-1

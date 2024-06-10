@@ -38,4 +38,5 @@ out/
 
 ### Credential ###
 rtchatwithtranslation-8f3847ebc62c.json
-.env*
+.env
+.env.dev

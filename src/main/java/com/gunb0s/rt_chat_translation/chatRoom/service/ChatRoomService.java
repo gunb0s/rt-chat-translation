@@ -5,6 +5,7 @@ import com.gunb0s.rt_chat_translation.chatMessage.repository.ChatMessageReposito
 import com.gunb0s.rt_chat_translation.chatRoom.entity.ChatRoom;
 import com.gunb0s.rt_chat_translation.chatRoom.entity.ChatRoomUser;
 import com.gunb0s.rt_chat_translation.chatRoom.entity.repository.ChatRoomRepository;
+import com.gunb0s.rt_chat_translation.messageBroker.MessageBroker;
 import com.gunb0s.rt_chat_translation.user.entity.User;
 import com.gunb0s.rt_chat_translation.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +22,7 @@ public class ChatRoomService {
     private final UserRepository userRepository;
     private final ChatRoomRepository chatRoomRepository;
     private final ChatMessageRepository chatMessageRepository;
+    private final MessageBroker messageBroker;
 
     @Transactional
     public ChatRoom createChatRoom(String userId) {
@@ -36,7 +38,12 @@ public class ChatRoomService {
                 .build();
 
         chatRoom.addUser(chatRoomUser);
-        return chatRoomRepository.save(chatRoom);
+        ChatRoom savedChatRoom = chatRoomRepository.save(chatRoom);
+
+        String subscriptionTopic = savedChatRoom.getId().replace("-", "");
+        messageBroker.createChatRoom(subscriptionTopic);
+
+        return savedChatRoom;
     }
 
     public List<ChatRoom> getMyChatRooms(String userId) {

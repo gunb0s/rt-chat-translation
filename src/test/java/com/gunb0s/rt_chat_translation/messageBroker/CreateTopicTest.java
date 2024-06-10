@@ -1,4 +1,4 @@
-package com.gunb0s.rt_chat_translation.kafka;
+package com.gunb0s.rt_chat_translation.messageBroker;
 
 import org.apache.kafka.clients.admin.AdminClientConfig;
 import org.apache.kafka.clients.admin.NewTopic;

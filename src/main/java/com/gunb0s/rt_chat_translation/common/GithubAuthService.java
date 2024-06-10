@@ -1,5 +1,6 @@
 package com.gunb0s.rt_chat_translation.common;
 
+import com.gunb0s.rt_chat_translation.common.service.HttpService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -24,6 +25,6 @@ public class GithubAuthService {
                 .build()
                 .toUriString();
 
-        return httpService.post(code, url, null, String.class);
+        return httpService.post(url, null, String.class);
     }
 }

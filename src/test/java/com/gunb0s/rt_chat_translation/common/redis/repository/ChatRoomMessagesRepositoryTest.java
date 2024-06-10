@@ -33,7 +33,7 @@ class ChatRoomMessagesRepositoryTest {
         chatMessages.add(chatMessage);
 
 
-        ChatRoomMessages chatRoomMessages = new ChatRoomMessages();
+        ChatRoomMessages chatRoomMessages = ChatRoomMessages.builder().build();
         chatRoomMessages.setId("test");
         chatRoomMessages.setChatMessages(chatMessages);
 

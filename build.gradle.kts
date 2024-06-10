@@ -37,6 +37,8 @@ dependencies {
 
     // redis
     implementation("org.springframework.boot:spring-boot-starter-data-redis")
+    
+    implementation("org.springframework.kafka:spring-kafka")
 
     testImplementation("org.springframework.security:spring-security-test")
     compileOnly("org.projectlombok:lombok")

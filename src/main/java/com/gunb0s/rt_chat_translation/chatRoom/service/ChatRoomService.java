@@ -8,6 +8,7 @@ import com.gunb0s.rt_chat_translation.chatRoom.entity.repository.ChatRoomReposit
 import com.gunb0s.rt_chat_translation.user.entity.User;
 import com.gunb0s.rt_chat_translation.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -47,7 +48,11 @@ public class ChatRoomService {
                 .orElseThrow(() -> new IllegalArgumentException("ChatRoom not found"));
     }
 
-    public List<ChatMessage> getChatRoomMessages(String chatRoomId) {
-        return chatMessageRepository.findByChatRoomId(chatRoomId);
+    public List<ChatMessage> getChatRoomMessages(String chatRoomId, Pageable pageable) {
+        return chatMessageRepository.findAllByChatRoomId(chatRoomId, pageable);
+    }
+
+    public List<ChatRoom> getRecentChatRooms() {
+        return chatRoomRepository.findRecentChatRooms();
     }
 }

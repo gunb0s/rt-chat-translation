@@ -1,4 +1,4 @@
-package com.gunb0s.rt_chat_translation.common.cofig;
+package com.gunb0s.rt_chat_translation.common.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -1,8 +1,6 @@
 package com.gunb0s.rt_chat_translation.chatRoom.controller;
 
 import com.gunb0s.rt_chat_translation.auth.service.MyUserDetail;
-import com.gunb0s.rt_chat_translation.chatMessage.controller.dto.ChatMessageDto;
-import com.gunb0s.rt_chat_translation.chatMessage.entity.ChatMessage;
 import com.gunb0s.rt_chat_translation.chatRoom.controller.dto.ChatRoomDto;
 import com.gunb0s.rt_chat_translation.chatRoom.entity.ChatRoom;
 import com.gunb0s.rt_chat_translation.chatRoom.service.ChatRoomService;
@@ -68,10 +66,13 @@ public class ChatRoomController {
                 );
     }
 
-    @GetMapping("{chatRoomId}/messages")
-    public ResponseEntity<?> getChatRoomMessages(@PathVariable String chatRoomId) {
-        List<ChatMessage> chatMessages = chatRoomService.getChatRoomMessages(chatRoomId);
-        List<ChatMessageDto> list = chatMessages.stream().map(ChatMessageDto::new).toList();
+    @GetMapping("/recent")
+    public ResponseEntity<?> getRecentChatRooms() {
+        List<ChatRoom> recentChatRooms = chatRoomService.getRecentChatRooms();
+        List<ChatRoomDto> list = recentChatRooms
+                .stream()
+                .map(ChatRoomDto::new)
+                .toList();
 
         return ResponseEntity
                 .ok(
@@ -79,16 +80,6 @@ public class ChatRoomController {
                                 .status(HttpStatus.OK.value())
                                 .data(list)
                                 .build()
-                );
-    }
-
-    @GetMapping("/recent")
-    public ResponseEntity<?> getRecentChatRooms() {
-        return ResponseEntity
-                .ok(
-                        ResponseDto.builder()
-                            .status(HttpStatus.OK.value())
-                            .build()
                 );
     }
 }

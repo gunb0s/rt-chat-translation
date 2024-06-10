@@ -1,4 +1,4 @@
-package com.gunb0s.rt_chat_translation.common.cofig;
+package com.gunb0s.rt_chat_translation.common.config;
 
 import com.gunb0s.rt_chat_translation.common.interceptor.LoggingInterceptor;
 import lombok.RequiredArgsConstructor;

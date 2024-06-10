@@ -16,4 +16,7 @@ public interface ChatRoomRepository extends JpaRepository<ChatRoom, String> {
 
     @Query("SELECT cr FROM ChatRoom cr JOIN FETCH cr.chatRoomUsers cru JOIN FETCH cru.user u WHERE cr.id = :chatRoomId")
     Optional<ChatRoom> findByChatRoomIdWithUser(@Param("chatRoomId") String chatRoomId);
+
+    @Query("SELECT cr FROM ChatRoom cr JOIN FETCH cr.chatRoomUsers cru JOIN FETCH cru.user u ORDER BY cr.createdDate DESC")
+    List<ChatRoom> findRecentChatRooms();
 }

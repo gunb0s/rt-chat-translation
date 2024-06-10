@@ -7,9 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.admin.NewTopic;
 import org.springframework.kafka.config.TopicBuilder;
 import org.springframework.kafka.core.KafkaAdmin;
-import org.springframework.stereotype.Component;
 
-@Component
 @RequiredArgsConstructor
 @Slf4j
 public class KafkaBroker implements MessageBroker {

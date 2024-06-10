@@ -1,8 +1,8 @@
 version: '3.8'
 services:
-  rt-chat-translation:
+  rt-chat-mysql:
     image: mysql:8.0.31
-    container_name: rt-chat-translation
+    container_name: rt-chat-mysql
     environment:
       MYSQL_DATABASE: ${DB_NAME}
       MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
@@ -16,3 +16,28 @@ services:
     volumes:
       - ./redis.conf:/usr/local/etc/redis/redis.conf
     command: redis-server /usr/local/etc/redis/redis.conf
+  rt-chat-kafka-1:
+    image: confluentinc/cp-kafka:7.6.1
+    container_name: rt-chat-kafka
+    environment:
+      KAFKA_NODE_ID: 1
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: CONTROLLER:PLAINTEXT,INTERNAL:PLAINTEXT,EXTERNAL:PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: INTERNAL://:29092,EXTERNAL://localhost:9092
+      KAFKA_LISTENERS: INTERNAL://:29092,CONTROLLER://:29093,EXTERNAL://0.0.0.0:9092
+      KAFKA_PROCESS_ROLES: 'broker,controller'
+      KAFKA_CONTROLLER_QUORUM_VOTERS: 1@rt-chat-kafka-1:29093
+      KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
+      KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+      CLUSTER_ID: fMCL8kv1SWm87L_Md-I2hg
+    ports:
+      - "9092:9092"
+  rt-chat-kafka-ui:
+    image: provectuslabs/kafka-ui:latest
+    container_name: rt-chat-kafka-ui
+    platform: linux/arm64
+    environment:
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: rt-chat-kafka-1:29092
+    ports:
+      - "8080:8080"
+    depends_on:
+      - rt-chat-kafka-1

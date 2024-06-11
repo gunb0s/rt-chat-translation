@@ -28,6 +28,7 @@ public class ChatMessageController {
     @SendTo("/sub/channel/{chatId}")
     public ChatMessageDto message(@DestinationVariable String chatId, ChatMessageDto chatMessageDto) {
         chatMessageService.saveChatMessage(chatId, chatMessageDto);
+
         return chatMessageDto;
     }
 

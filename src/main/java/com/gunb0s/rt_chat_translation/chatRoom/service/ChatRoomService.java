@@ -40,7 +40,7 @@ public class ChatRoomService {
         chatRoom.addUser(chatRoomUser);
         ChatRoom savedChatRoom = chatRoomRepository.save(chatRoom);
 
-        String subscriptionTopic = savedChatRoom.getId().replace("-", "");
+        String subscriptionTopic = "rtChatMessage";
         messageBroker.createChatRoom(subscriptionTopic);
 
         return savedChatRoom;

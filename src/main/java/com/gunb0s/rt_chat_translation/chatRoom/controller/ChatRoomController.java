@@ -24,7 +24,6 @@ public class ChatRoomController {
         MyUserDetail myUserDetail = (MyUserDetail) authentication.getPrincipal();
         ChatRoom chatRoom = chatRoomService.createChatRoom(myUserDetail.getId());
 
-
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(
